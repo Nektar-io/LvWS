@@ -1,7 +1,6 @@
 library(XML)
 library(httr)
 
-# General methods
 get_xml <- function(path, query) {
     url <- modify_url(url = .url,
                       path = file.path(.path, path),
@@ -13,6 +12,11 @@ get_xml <- function(path, query) {
 
 # API methods
 
+#' Get Street Adresses
+#' 
+#' ...
+#' 
+#' @export
 GetAddresses <- function(
     apiKey = .api,
     municipalityPattern = "",
@@ -39,7 +43,11 @@ GetAddresses <- function(
 }
 # x <- GetAddresses(streetName = "Birkagatan")
 
-
+#' Get Street Names
+#' 
+#' ...
+#' 
+#' @export
 GetStreetNames <- function(
     apiKey = .api,
     streetNamePattern = "",
