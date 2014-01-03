@@ -10,3 +10,5 @@ License: AGPLv3
 Depends:
     httr
 Collate:
+    '0-constants.r'
+    'api-methods.r'
