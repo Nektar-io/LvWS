@@ -14,6 +14,46 @@ get_xml <- function(path, query) {
     xmlParse(x)
 }
 
+#' Get parking places
+#' 
+#' TODO: add support for lon, lat instead of street!
+#' See http://openstreetgs.stockholm.se/Home/Parking
+#' 
+#' @examples
+#' \dontrun{
+#' # Get parking places at Birkagatan
+#' get_parking_places(streetName = "Birkagatan")
+#' }
+#' @export
+get_parking_places <- function(
+    foreskrift = "ptillaten",
+    operation = file.path("street", streetName),
+    apiKey = .api,
+    streetName = NULL
+) {
+    if (is.null(operation)) stop("Please provide streetName or operation")
+    
+    url <- modify_url(
+        url = "http://openparking.stockholm.se",
+        path = sprintf("LTF-Tolken/v1/%s/%s", foreskrift, operation),
+        query = list(
+            apiKey = apiKey,
+            outputFormat = "json"
+        )
+    )
+    x <- paste0(readLines(url, warn = FALSE))
+    x <- fromJSON(x)
+    x <- list_to_table(x$features)
+    
+    # Remove geometry columns (to clean up result table a bit)
+    cols <- colnames(x)[grep("geometry.coordinates", colnames(x))]
+    new_col <- split(x[, cols], 1:nrow(x))
+    x <- x[, -grep("geometry.coordinates", colnames(x))]
+    x$geometry.coordinates <- new_col  # store them as a list
+    
+    return(x)
+}
+
 #' Get Street Adresses
 #' 
 #' Get street adresses from the LvWS API.
@@ -66,4 +106,17 @@ GetStreetNames <- function(
     x <- xmlToList(x, simplify = TRUE)
     x <- x[rownames(x) %in% "StreetName"]
     unlist(x)
+}
+
+#' Convert list to table
+#' 
+#' Flattens out a nested list 
+#' 
+#' @param x list
+list_to_table <- function(x) {
+    do.call("rbind.fill",
+        lapply(x, function(y) {
+            data.frame(t(unlist(y)))
+        })
+    )
 }
