@@ -34,18 +34,7 @@ GetAddresses <- function(
     postalAreaPattern = "",
     includeAddressConnectionsForTrafficTypes = "0"
 ) {
-    x <- get_xml(
-        path = "GetAddresses",
-        query = list(
-            apiKey = apiKey,
-            municipalityPattern = municipalityPattern,
-            streetName = streetName,
-            streetNumPattern = streetNumPattern,
-            postalCodePattern = postalCodePattern,
-            postalAreaPattern = postalAreaPattern,
-            includeAddressConnectionsForTrafficTypes = includeAddressConnectionsForTrafficTypes
-        )
-    )
+    x <- get_xml(path = "GetAddresses", query = as.list(environment()))
     xmlToDataFrame(x)
 }
 
@@ -73,17 +62,7 @@ GetStreetNames <- function(
     optionalPostalArea = "",
     optionalPostalCode = ""
 ) {
-    x <- get_xml(
-        path = "GetStreetNames",
-        query = list(
-            apiKey = apiKey,
-            streetNamePattern = streetNamePattern,
-            optionalMunicipality = optionalMunicipality,
-            optionalPostalArea = optionalPostalArea,
-            optionalPostalCode = optionalPostalCode
-        )
-    )
-    
+    x <- get_xml(path = "GetStreetNames", query = as.list(environment()))
     x <- xmlToList(x, simplify = TRUE)
     x <- x[rownames(x) %in% "StreetName"]
     unlist(x)
