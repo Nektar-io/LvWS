@@ -1,6 +1,3 @@
-library(XML)
-library(httr)
-
 #' Get XML
 #' 
 #' Get XML data from the API.
