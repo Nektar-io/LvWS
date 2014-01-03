@@ -8,7 +8,8 @@ Maintainer: Thomas Reinholdsson <reinholdsson@gmail.com>
 Description: ...
 License: AGPLv3
 Depends:
-    httr
+    httr,
+    XML
 Collate:
     '0-constants.r'
     'api-methods.r'

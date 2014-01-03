@@ -47,6 +47,12 @@ GetAddresses <- function(
 #' 
 #' ...
 #' 
+#' @param apiKey API key
+#' @param streetNamePattern Street Name Pattern
+#' @param optionalMunicipality Municipality (optional)
+#' @param optionalPostalArea Postal Area (optional)
+#' @param optionalPostalCode Postal Code (optional)
+#' 
 #' @export
 GetStreetNames <- function(
     apiKey = .api,
