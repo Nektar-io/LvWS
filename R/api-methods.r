@@ -10,6 +10,16 @@ get_xml <- function(path, query) {
         path = file.path(.path, path),
         query = query
     )
+
+    # Replace silly percent encoding with other silly percent encoding
+    for(i in 1:6) {
+        url <- str_replace_all(
+            url, 
+            c("%C3%A5","%C3%A4","%C3%B6","%C3%85","%C3%84","%C3%96")[i],
+            c("%E5","%E4","%F6","%C5","%C4","%D6")[i]
+        )
+    }
+    
     cat(url,"\n")
     x <- paste(readLines(url, warn = FALSE), collapse="")
     xmlParse(x)
