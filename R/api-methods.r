@@ -153,8 +153,13 @@ GetCoords <- function(
     return_string <- str_extract_all(return_string, "[0-9\\.]*")[[1]]
     return_string <- return_string[str_length(return_string) > 0]
     
-    # Return the numeric value of the return RT90 values (without decimals).
+    coords <- list(
+        RT90 = as.double(return_string[c(2,1)]),
+        WGS84 = as.double(strings[c(2,1)])
+    )
+    
     # We change the order of the values since LvWS returns the values in 
     # [easting, northing] order, which is the opposite of what it should be.
-    return(as.double(return_string[c(2,1)]))
+    message("Coordinates generated on [northing, easting] form")
+    return(coords)
 }
