@@ -2,9 +2,9 @@
 \alias{GetStreetNames}
 \title{Get Street Names}
 \usage{
-  GetStreetNames(apiKey = .api, streetNamePattern = "",
-    optionalMunicipality = "", optionalPostalArea = "",
-    optionalPostalCode = "")
+GetStreetNames(apiKey = .api, streetNamePattern = "",
+  optionalMunicipality = "", optionalPostalArea = "",
+  optionalPostalCode = "")
 }
 \arguments{
   \item{apiKey}{API key}
@@ -18,8 +18,8 @@
   \item{optionalPostalCode}{Postal Code (optional)}
 }
 \description{
-  Get street names from the LvWS API. It's also possible to
-  provide wildcards.
+Get street names from the LvWS API. It's also possible to
+provide wildcards.
 }
 \examples{
 \dontrun{

@@ -2,12 +2,12 @@
 \alias{list_to_table}
 \title{Convert list to table}
 \usage{
-  list_to_table(x)
+list_to_table(x)
 }
 \arguments{
   \item{x}{list}
 }
 \description{
-  Flattens out a nested list
+Flattens out a nested list
 }
 
