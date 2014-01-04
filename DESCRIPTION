@@ -12,6 +12,3 @@ Depends:
     XML,
     RJSONIO,
     plyr
-Collate:
-    '0-constants.r'
-    'api-methods.r'

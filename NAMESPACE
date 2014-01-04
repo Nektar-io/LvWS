@@ -1,3 +1,4 @@
 export(GetAddresses)
+export(GetCoords)
 export(GetStreetNames)
 export(get_parking_places)

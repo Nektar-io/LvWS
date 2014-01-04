@@ -10,6 +10,7 @@ get_xml <- function(path, query) {
         path = file.path(.path, path),
         query = query
     )
+    cat(url,"\n")
     x <- paste(readLines(url, warn = FALSE), collapse="")
     xmlParse(x)
 }
@@ -75,7 +76,7 @@ GetAddresses <- function(
     includeAddressConnectionsForTrafficTypes = "0"
 ) {
     x <- get_xml(path = "GetAddresses", query = as.list(environment()))
-    xmlToDataFrame(x)
+    xmlToDataFrame(x, stringsAsFactors = FALSE)
 }
 
 #' Get Street Names
@@ -114,9 +115,46 @@ GetStreetNames <- function(
 #' 
 #' @param x list
 list_to_table <- function(x) {
-    do.call("rbind.fill",
+    do.call(
+        "rbind.fill",
         lapply(x, function(y) {
             data.frame(t(unlist(y)))
         })
     )
+}
+
+#' Get coords in different coordinate systems
+#' 
+#' Get coords in different coordinate systems from WKT (e.g. RT90 2.5 from WGS 84)
+#' 
+#' @param WKT WKT point from GetAddresses()
+#' @export
+
+GetCoords <- function(
+    WKT,
+    apiKey = .api,
+    targetCoordSrid = 3021
+) {
+    # The "WKT" string contains the point coordinates of an address
+    strings <- str_extract_all(WKT, "[0-9\\.]*")[[1]]
+    strings <- strings[str_length(strings) > 0]
+    WKTx <- strings[1]
+    WKTy <- strings[2]
+    
+    coords <- get_xml(path = "TransformGeometry", query = list(
+        apikey = apiKey,
+        wkt = paste("POINT (", WKTx, " ", WKTy, ")", sep=""),
+        fromSrid = 4326,
+        toSrid = targetCoordSrid
+    ))
+    
+    
+    return_string <- unlist(xpathApply(coords, "//ns:string/text()", xmlValue, namespaces="ns"))
+    return_string <- str_extract_all(return_string, "[0-9\\.]*")[[1]]
+    return_string <- return_string[str_length(return_string) > 0]
+    
+    # Return the numeric value of the return RT90 values (without decimals).
+    # We change the order of the values since LvWS returns the values in 
+    # [easting, northing] order, which is the opposite of what it should be.
+    return(as.double(return_string[c(2,1)]))
 }
